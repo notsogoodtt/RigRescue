@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RigRescue", "RigRescue.csproj", "{4D75D70A-F494-4076-84E9-70EA6068E26B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D75D70A-F494-4076-84E9-70EA6068E26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D75D70A-F494-4076-84E9-70EA6068E26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D75D70A-F494-4076-84E9-70EA6068E26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D75D70A-F494-4076-84E9-70EA6068E26B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1432FF0-6609-4E00-8077-D7DB80E18AE9}
+	EndGlobalSection
+EndGlobal
