@@ -1,0 +1,90 @@
+﻿@model RigRescue.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Join RigRescue";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-primary">RigRescue</h2>
+                        <p class="text-muted">Create your account to get started</p>
+                    </div>
+
+                    <form asp-action="Register" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label asp-for="Password" class="form-label fw-semibold"></label>
+                                <input asp-for="Password" class="form-control" placeholder="Create a password" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="ConfirmPassword" class="form-label fw-semibold"></label>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Location" class="form-label fw-semibold"></label>
+                            <input asp-for="Location" class="form-control" placeholder="e.g., Liloan or Cebu City" />
+                            <span asp-validation-for="Location" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Role" class="form-label fw-semibold">I want to...</label>
+                            <select asp-for="Role" class="form-select" id="roleSelect" onchange="toggleStudentIdField()">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Client">Hire a Technician (Client)</option>
+                                <option value="Technician">Offer Tech Services (Technician)</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Hidden by default, toggled via JS -->
+                        <div class="mb-4 d-none" id="studentIdContainer">
+                            <label asp-for="StudentIdImage" class="form-label fw-semibold"></label>
+                            <input asp-for="StudentIdImage" class="form-control" type="file" accept="image/png, image/jpeg" />
+                            <div class="form-text">Required for verification before accepting gigs.</div>
+                            <span asp-validation-for="StudentIdImage" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Sign Up</button>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p class="small">Already have an account? <a asp-action="Login" class="text-decoration-none">Log in here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function toggleStudentIdField() {
+            var roleSelect = document.getElementById("roleSelect").value;
+            var idContainer = document.getElementById("studentIdContainer");
+            
+            if (roleSelect === "Technician") {
+                idContainer.classList.remove("d-none");
+            } else {
+                idContainer.classList.add("d-none");
+            }
+        }
+       
+    </script>
+    }
