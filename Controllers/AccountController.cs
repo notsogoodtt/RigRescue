@@ -11,7 +11,16 @@ namespace RigRescue.Controllers
             return View();
         }
 
-      
+      [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(model);
+        }
 
         [HttpGet]
         public IActionResult Login()
