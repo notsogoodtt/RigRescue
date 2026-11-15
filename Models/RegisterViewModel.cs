@@ -28,6 +28,6 @@ namespace RigRescue.ViewModels
         public string Location { get; set; }
 
         [Display(Name = "Upload Student ID (Technicians Only)")]
-        public IFormFile StudentIdImage { get; set; }
+        public IFormFile? StudentIdImage { get; set; }
     }
 }
