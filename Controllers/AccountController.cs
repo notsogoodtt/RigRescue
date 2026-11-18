@@ -34,19 +34,7 @@ namespace RigRescue.Controllers
             {
                 string? uniqueFileName = null;
 
-                if (model.Role == "Technician" && model.StudentIdImage != null)
-                {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "ids");
-                    Directory.CreateDirectory(uploadsFolder); 
-
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.StudentIdImage.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await model.StudentIdImage.CopyToAsync(fileStream);
-                    }
-                }
+                
 
                 var user = new ApplicationUser
                 {
@@ -54,7 +42,6 @@ namespace RigRescue.Controllers
                     Email = model.Email,
                     Role = model.Role,
                     Location = model.Location,
-                    StudentIDUrl = uniqueFileName,
                     IsVerified = false 
                 };
 

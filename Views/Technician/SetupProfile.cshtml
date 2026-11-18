@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Technician Setup";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold mb-4 text-center">Complete Your Tech Profile</h3>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        </div>
+                    }
+
+                    <!-- The enctype is critical for allowing image uploads -->
+                    <form asp-action="SetupProfile" method="post" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Display Name</label>
+                            <input type="text" name="name" class="form-control" value="@User.Identity?.Name" required />
+                        </div>
+
+                        <!-- The City/Location input has been completely removed -->
+
+                        <div class="mb-4">
+                            <label class="form-label fw-medium">Primary Specialty</label>
+                            <select name="specialty" class="form-select" required>
+                                <option value="General Hardware & Upgrades">General Hardware & Upgrades</option>
+                                <option value="OS Optimization & Malware Removal">OS Optimization & Malware Removal</option>
+                                <option value="Deep Cleaning & Thermal Repasting">Deep Cleaning & Thermal Repasting</option>
+                                <option value="Custom PC Building">Custom PC Building</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4 p-3 bg-light rounded border">
+                            <label class="form-label fw-bold text-primary">Upload Valid Student ID</label>
+                            <p class="small text-muted mb-2">Required for Admin verification before you can accept gigs.</p>
+                            <input type="file" name="studentIdFile" class="form-control" accept="image/*" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Submit for Verification</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

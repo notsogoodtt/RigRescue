@@ -10,5 +10,8 @@ namespace RigRescue.Data
         {
         }
 
+        public DbSet<TechnicianProfile> TechnicianProfiles { get; set; }
+        public DbSet<ServiceRequest> ServiceRequests { get; set; }
+
     }
 }

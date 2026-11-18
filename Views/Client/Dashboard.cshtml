@@ -1,11 +1,104 @@
-﻿@{
+﻿@model IEnumerable<RigRescue.Models.TechnicianProfile>
+@{
     ViewData["Title"] = "Client Dashboard";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4 text-primary fw-bold">Welcome, Client!</h1>
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold">Welcome back, @User.Identity?.Name!</h2>
+            <p class="text-muted">Find local IT student technicians or check your active hardware repair requests.</p>
+        </div>
+    </div>
 
-    <form asp-controller="Account" asp-action="Logout" method="post" class="mt-4">
-        <button type="submit" class="btn btn-outline-danger">Log Out</button>
-    </form>
+    <!-- Matchmaking UI (Technician Discovery) -->
+    <div class="card shadow-sm mb-5 border-0 bg-white">
+        <div class="card-body p-4">
+            <h4 class="mb-3">Find a Technician</h4>
+
+            <form asp-action="Dashboard" method="get" class="row g-3 align-items-center mb-4">
+                <div class="col-md-9">
+                    <input type="text" name="searchLocation" class="form-control form-control-lg bg-light border-0" placeholder="Enter your City or Barangay (e.g., Liloan, Cebu City)...">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Search</button>
+                </div>
+            </form>
+
+            <h6 class="mb-3 text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Local Technicians near you</h6>
+            <div class="row">
+                @if (!Model.Any())
+                {
+                    <div class="col-12"><p class="text-muted">No active technicians found in this area.</p></div>
+                }
+
+                @foreach (var tech in Model)
+                {
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-primary shadow-sm">
+                            <div class="card-body text-center">
+                                <span class="badge bg-success mb-3">Verified Student ID</span>
+                                <h5 class="card-title fw-bold">@tech.Name</h5>
+                                <p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill"></i> @tech.Location</p>
+                                <p class="card-text small">Specialty: @tech.Specialty</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 pb-3">
+                                <form asp-controller="Client" asp-action="RequestConsult" method="post">
+                                    <input type="hidden" name="technicianId" value="@tech.Id" />
+
+                                    <div class="mb-2">
+                                        <input type="text" name="issueDescription" class="form-control form-control-sm bg-light" placeholder="Describe your PC issue..." required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Send Consult Request</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Service Requests Tracking -->
+    <h4 class="mb-3">My Service Requests</h4>
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="py-3 px-4">Date</th>
+                        <th class="py-3">Technician</th>
+                        <th class="py-3">Issue / Specs Detail</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3 px-4 text-end">Action</th> <!-- Added Action Header -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.MyRequests == null || !((IEnumerable<RigRescue.Models.ServiceRequest>)ViewBag.MyRequests).Any())
+                    {
+                        <tr><td colspan="5" class="text-center text-muted py-4">You have no active service requests.</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var req in (IEnumerable<RigRescue.Models.ServiceRequest>)ViewBag.MyRequests)
+                        {
+                            <tr>
+                                <td class="px-4 text-muted small">@req.RequestDate.ToString("MMM dd, yyyy")</td>
+                                <td class="fw-medium">Tech ID: @req.TechnicianProfileId</td>
+                                <td>@req.IssueDescription</td>
+                                <td><span class="badge bg-secondary">@req.Status</span></td>
+                                <td class="px-4 text-end">
+                                    <!-- THE DELETE BUTTON -->
+                                    <form asp-controller="Client" asp-action="CancelRequest" method="post" onsubmit="return confirm('Are you sure you want to cancel this request?');">
+                                        <input type="hidden" name="requestId" value="@req.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

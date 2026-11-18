@@ -1,11 +1,70 @@
-﻿@{
+﻿@model IEnumerable<RigRescue.Models.ServiceRequest>
+@{
     ViewData["Title"] = "Technician Dashboard";
+    // This grabs the active status we passed from the TechnicianController
+    bool isActive = ViewBag.IsActive ?? false;
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4 text-success fw-bold">Welcome, Technician!</h1>
+<div class="container mt-4 mb-5">
+    <!-- Header & Availability Toggle -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold">Welcome back, @ViewBag.TechnicianName!</h2>
+            <p class="text-muted">Manage your availability and incoming service requests.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
 
-    <form asp-controller="Account" asp-action="Logout" method="post" class="mt-4">
-        <button type="submit" class="btn btn-outline-danger">Log Out</button>
-    </form>
+            <!-- THE NEW TOGGLE FORM GOES EXACTLY HERE -->
+            <form asp-controller="Technician" asp-action="ToggleStatus" method="post" id="toggleForm" class="d-inline-block">
+                <div class="form-check form-switch fs-4">
+                    <input class="form-check-input" type="checkbox" name="isActive" value="true" id="availabilityToggle"
+                           @(isActive ? "checked" : "") onchange="document.getElementById('toggleForm').submit();">
+
+                    <label class="form-check-label fs-6 ms-2" id="statusLabel">
+                        @(isActive ? "Active (Visible)" : "Offline (Hidden)")
+                    </label>
+                </div>
+            </form>
+            <!-- END OF TOGGLE FORM -->
+
+        </div>
+    </div>
+
+    <!-- Active Gigs / Workload -->
+    <h4 class="mb-3">Incoming Client Requests</h4>
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="py-3 px-4">Date</th>
+                        <th class="py-3">Client Name</th>
+                        <th class="py-3">Client Address</th> <!-- NEW HEADER -->
+                        <th class="py-3">Hardware Issue</th>
+                        <th class="py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="5" class="text-center text-muted py-4">No incoming requests yet.</td></tr>
+                    }
+
+                    @foreach (var req in Model)
+                    {
+                        <tr>
+                            <td class="px-4 text-muted small">@req.RequestDate.ToString("MMM dd, yyyy")</td>
+                            <td class="fw-medium">@req.ClientName</td>
+
+                            <!-- NEW DATA CELL PULLING FROM THE VIEW BAG -->
+                            <td class="text-secondary"><i class="bi bi-geo-alt"></i> @ViewBag.ClientAddresses[req.ClientId]</td>
+
+                            <td>@req.IssueDescription</td>
+                            <td><span class="badge bg-warning text-dark">@req.Status</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

@@ -21,13 +21,11 @@ namespace RigRescue.ViewModels
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Please select a role.")]
-        public string Role { get; set; } // client or technician
+        public string Role { get; set; } 
 
         [Required(ErrorMessage = "Location is required for matchmaking.")]
         [Display(Name = "City or Barangay")]
         public string Location { get; set; }
 
-        [Display(Name = "Upload Student ID (Technicians Only)")]
-        public IFormFile? StudentIdImage { get; set; }
     }
 }
